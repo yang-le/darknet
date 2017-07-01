@@ -5,6 +5,20 @@
 #include <string.h>
 #include <pthread.h>
 
+/**
+\file darknet.h
+\brief Darknet编程接口
+
+\mainpage Darknet
+
+Darknet \cite darknet13 is an open source neural network framework written in C and CUDA. It is fast, easy to install, and supports CPU and GPU computation.
+
+For more information see the <a href="http://pjreddie.com/darknet">Darknet project website</a>.
+
+For questions or issues please use the <a href="https://groups.google.com/forum/#!forum/darknet">Google Group</a>.
+
+*/
+
 #define SECRET_NUM -1234
 extern int gpu_index;
 
@@ -50,7 +64,51 @@ typedef struct{
     int *group_size;
     int *group_offset;
 } tree;
+/**
+\enum ACTIVATION
+\brief 激活函数
 
+\image html activation.jpg
+
+\var LOGISTIC
+\brief logistic S函数
+\f[f(x)=\frac{1}{1 + \mathrm{e}^{-x}}\f]
+
+\var RELU
+\brief 线性整流单元
+
+\var RELIE
+
+\var LINEAR
+\brief 线性函数
+
+\var RAMP
+\brief 斜坡函数
+
+\var TANH
+\brief 双曲正切函数
+
+\var PLSE
+
+\var LEAKY
+\brief 带泄漏的线性整流单元
+
+\var ELU
+\brief 指数线性单元
+
+\var LOGGY
+\brief 双极型logistic S函数
+
+\var STAIR
+\brief 阶梯函数
+
+\var HARDTAN
+\brief 硬双曲正切函数
+
+\var LHTAN
+\brief 带泄漏的硬双曲正切函数
+
+*/
 typedef enum{
     LOGISTIC, RELU, RELIE, LINEAR, RAMP, TANH, PLSE, LEAKY, ELU, LOGGY, STAIR, HARDTAN, LHTAN
 } ACTIVATION;

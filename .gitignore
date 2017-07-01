@@ -1,10 +1,14 @@
 *.o
+*.a
+*.so
 *.dSYM
 *.csv
 *.out
 *.png
 *.jpg
 *.pyc
+weights/
+doc/
 old/
 mnist/
 data/
