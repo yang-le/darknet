@@ -4,11 +4,9 @@
 *.dSYM
 *.csv
 *.out
-*.png
-*.jpg
 *.pyc
 weights/
-doc/
+html/
 old/
 mnist/
 data/
