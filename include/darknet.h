@@ -64,6 +64,7 @@ typedef struct{
     int *group_size;
     int *group_offset;
 } tree;
+
 /**
 \enum ACTIVATION
 \brief 激活函数
@@ -72,74 +73,157 @@ typedef struct{
 
 \var LOGISTIC
 \brief logistic S函数
-\f[f(x)=\frac{1}{1 + \mathrm{e}^{-x}}\f]
+\f[f(x) = \frac{1}{1 + \mathrm{e}^{-x}}\f]
 
 \var RELU
 \brief 线性整流单元
+\f[
+    f(x) = \begin{cases}
+        x, &x > 0 \\\
+        0, &x \leq 0
+    \end{cases}
+\f]
 
 \var RELIE
+\brief
+\f[
+    f(x) = \begin{cases}
+        x, &x > 0 \\\
+        0.01x, &x \leq 0
+    \end{cases}
+\f]
 
 \var LINEAR
 \brief 线性函数
+\f[f(x) = x\f]
 
 \var RAMP
 \brief 斜坡函数
+\f[
+    f(x) = \begin{cases}
+        x + 0.1x, &x > 0 \\\
+        0.1x, &x \leq 0
+    \end{cases}
+\f]
 
 \var TANH
 \brief 双曲正切函数
+\f[
+    f(x) =  \frac{\mathrm{e}^{2x} - 1}{\mathrm{e}^{2x} + 1}
+\f]
 
 \var PLSE
+\brief
+\f[
+    f(x) = \begin{cases}
+        0.01(x + 4), &x < -4 \\\
+        0.125x + 0.5, &-4 \leq x \leq 4 \\\
+        0.01(x - 4) + 1, &x > 4
+    \end{cases}
+\f]
 
 \var LEAKY
 \brief 带泄漏的线性整流单元
+\f[
+    f(x) = \begin{cases}
+        x, &x > 0 \\\
+        0.1x, &x \leq 0
+    \end{cases}
+\f]
 
 \var ELU
 \brief 指数线性单元
+\f[
+    f(x) = \begin{cases}
+        x, &x > 0 \\\
+        \mathrm{e}^{x} - 1, &x \leq 0
+    \end{cases}
+\f]
 
 \var LOGGY
 \brief 双极型logistic S函数
+\f[f(x) = \frac{2}{1 + \mathrm{e}^{-x}} - 1\f]
 
 \var STAIR
 \brief 阶梯函数
+\f[
+    f(x) = \begin{cases}
+        \lfloor \frac{x}{2} \rfloor, &\lfloor x \rfloor是偶数 \\\
+        x - \lfloor x \rfloor + \lfloor \frac{x}{2} \rfloor, &\lfloor x \rfloor是奇数
+    \end{cases}
+\f]
 
 \var HARDTAN
 \brief 硬双曲正切函数
+\f[
+    f(x) = \begin{cases}
+        -1, &x < -1 \\\
+        x, &-1 \leq x \leq 1 \\\
+        1, &x > 1
+    \end{cases}
+\f]
 
 \var LHTAN
 \brief 带泄漏的硬双曲正切函数
-
+\f[
+    f(x) = \begin{cases}
+        0.001x, &x < 0 \\\
+        x, &0 \leq x \leq 1 \\\
+        0.001(x - 1) + 1, &x > 1
+    \end{cases}
+\f]
 */
+
 typedef enum{
     LOGISTIC, RELU, RELIE, LINEAR, RAMP, TANH, PLSE, LEAKY, ELU, LOGGY, STAIR, HARDTAN, LHTAN
 } ACTIVATION;
 
+/**
+\enum LAYER_TYPE
+\brief 层类型
+*/
+
 typedef enum {
-    CONVOLUTIONAL,
-    DECONVOLUTIONAL,
-    CONNECTED,
-    MAXPOOL,
-    SOFTMAX,
-    DETECTION,
-    DROPOUT,
-    CROP,
-    ROUTE,
-    COST,
-    NORMALIZATION,
-    AVGPOOL,
-    LOCAL,
-    SHORTCUT,
-    ACTIVE,
-    RNN,
-    GRU,
-    LSTM,
-    CRNN,
-    BATCHNORM,
-    NETWORK,
-    XNOR,
-    REGION,
-    REORG,
-    BLANK
+    CONVOLUTIONAL,      /**< 卷积层 */
+    DECONVOLUTIONAL,    /**< 去卷积层 */
+    CONNECTED,          /**< 全连接层 */
+    MAXPOOL,            /**< 最大池化层 */
+    SOFTMAX,            /**< SOFTMAX层 */
+    DETECTION,          /**< 检测层 */
+    DROPOUT,            /**< DROPOUT层 */
+    CROP,               /**< 裁切层 */
+    ROUTE,              /**< 路径层 */
+    COST,               /**< 损失函数层 */
+    NORMALIZATION,      /**< 归一化层 */
+    AVGPOOL,            /**< 平均池化层 */
+    LOCAL,              /**< 局部层 */
+    SHORTCUT,           /**< 捷径层 */
+    ACTIVE,             /**< 激活层 */
+    RNN,                /**< 循环神经网络层 */
+    GRU,                /**< 门控循环单元层 */
+    LSTM,               /**< 长短期记忆层 */
+    CRNN,               /**< 卷积循环神经网络层 */
+    BATCHNORM,          /**< 批归一化层 */
+    NETWORK,            /**< 网络 */
+    XNOR,               /**< 同或层 */
+    REGION,             /**< REGION层 */
+    REORG,              /**< REORG层 */
+    BLANK               /**< 空层 */
 } LAYER_TYPE;
+
+/**
+\enum COST_TYPE
+\brief 损失函数类型
+
+\var SSE
+\brief L2范数, 误差平方和
+
+\var L1
+\brief L1范数, 误差绝对值和
+
+\var SMOOTH
+\brief 光滑的L1范数
+*/
 
 typedef enum{
     SSE, MASKED, L1, SEG, SMOOTH
