@@ -5,6 +5,7 @@
 *.csv
 *.out
 *.pyc
+.vscode
 weights/
 html/
 old/

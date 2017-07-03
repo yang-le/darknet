@@ -229,16 +229,21 @@ typedef enum{
     SSE, MASKED, L1, SEG, SMOOTH
 } COST_TYPE;
 
+/**
+\struct update_args
+\brief 更新规则
+*/
+
 typedef struct{
-    int batch;
-    float learning_rate;
-    float momentum;
-    float decay;
-    int adam;
-    float B1;
-    float B2;
-    float eps;
-    int t;
+    int batch;              /**< 批大小 */
+    float learning_rate;    /**< 学习速率 */
+    float momentum;         /**< 动量 */
+    float decay;            /**< 衰减率 */
+    int adam;               /**< 自适应矩估计\cite KingmaB14 */
+    float B1;               /**< 一阶矩指数衰减率 */
+    float B2;               /**< 二阶矩指数衰减率 */
+    float eps;              /**<  */
+    int t;                  /**< 更新步数 */
 } update_args;
 
 struct network;
@@ -247,39 +252,44 @@ typedef struct network network;
 struct layer;
 typedef struct layer layer;
 
+/**
+\struct layer
+\brief 层
+*/
+
 struct layer{
-    LAYER_TYPE type;
-    ACTIVATION activation;
-    COST_TYPE cost_type;
-    void (*forward)   (struct layer, struct network);
-    void (*backward)  (struct layer, struct network);
-    void (*update)    (struct layer, update_args);
-    void (*forward_gpu)   (struct layer, struct network);
-    void (*backward_gpu)  (struct layer, struct network);
-    void (*update_gpu)    (struct layer, update_args);
-    int batch_normalize;
+    LAYER_TYPE type;            /**< 类型 */
+    ACTIVATION activation;      /**< 激活函数 */
+    COST_TYPE cost_type;        /**< 损失函数 */
+    void (*forward)   (struct layer, struct network);       /**< 正向传导函数 */
+    void (*backward)  (struct layer, struct network);       /**< 反向传导函数 */
+    void (*update)    (struct layer, update_args);          /**< 更新函数 */
+    void (*forward_gpu)   (struct layer, struct network);   /**< 正向传导函数(GPU版本) */
+    void (*backward_gpu)  (struct layer, struct network);   /**< 反向传导函数(GPU版本) */
+    void (*update_gpu)    (struct layer, update_args);      /**< 更新函数(GPU版本) */
+    int batch_normalize;        /**< 批归一化 */
     int shortcut;
-    int batch;
+    int batch;                  /**< 批大小 */
     int forced;
     int flipped;
-    int inputs;
-    int outputs;
-    int nweights;
-    int nbiases;
+    int inputs;                 /**< 输入元素数量 */
+    int outputs;                /**< 输出元素数量 */
+    int nweights;               /**< 权重数量 */
+    int nbiases;                /**< 偏置数量 */
     int extra;
     int truths;
-    int h,w,c;
-    int out_h, out_w, out_c;
+    int h/** 高 */, w/** 宽 */, c/** 通道 */;
+    int out_h/** 输出高 */, out_w/** 输出宽 */, out_c/** 输出通道 */;
     int n;
     int max_boxes;
     int groups;
-    int size;
+    int size;                   /**< 卷积核大小 */
     int side;
-    int stride;
+    int stride;                 /**< 卷积步长 */
     int reverse;
     int flatten;
     int spatial;
-    int pad;
+    int pad;                    /**< 填充长度 */
     int sqrt;
     int flip;
     int index;
@@ -353,17 +363,17 @@ struct layer{
 
     float * binary_weights;
 
-    float * biases;
-    float * bias_updates;
+    float * biases;                 /**< 偏置 */
+    float * bias_updates;           /**< 偏置更新量 */
 
     float * scales;
     float * scale_updates;
 
-    float * weights;
-    float * weight_updates;
+    float * weights;                /**< 权重 */
+    float * weight_updates;         /**< 权重更新量 */
 
     float * delta;
-    float * output;
+    float * output;                 /**< 输出元素 */
     float * squared;
     float * norms;
 
@@ -544,6 +554,14 @@ struct layer{
 };
 
 void free_layer(layer);
+
+/**
+\enum learning_rate_policy
+\brief 学习策略
+
+\var CONSTANT
+
+*/
 
 typedef enum {
     CONSTANT, STEP, EXP, POLY, STEPS, SIG, RANDOM
