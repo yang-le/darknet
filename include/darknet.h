@@ -268,7 +268,7 @@ struct layer{
     void (*backward_gpu)  (struct layer, struct network);   /**< 反向传导函数(GPU版本) */
     void (*update_gpu)    (struct layer, update_args);      /**< 更新函数(GPU版本) */
     int batch_normalize;        /**< 批归一化 */
-    int shortcut;
+    int shortcut;               /**< 是否引入捷径(残差连接) */
     int batch;                  /**< 批大小 */
     int forced;
     int flipped;
@@ -280,7 +280,7 @@ struct layer{
     int truths;
     int h/** 高 */, w/** 宽 */, c/** 通道 */;
     int out_h/** 输出高 */, out_w/** 输出宽 */, out_c/** 输出通道 */;
-    int n;
+    int n;                      /**< 卷积核个数 */
     int max_boxes;
     int groups;
     int size;                   /**< 卷积核大小 */
